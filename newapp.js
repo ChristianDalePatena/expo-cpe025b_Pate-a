@@ -1,13 +1,13 @@
-// File: App.js
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 
 import GoalInput from './components/GoalInput';
-import GoalList from './components/GoalList';
+import GoalItem from './components/GoalItem';
 
 export default function App() {
   const [goals, setGoals] = useState([]);
 
+  // Add a new goal
   function addGoalHandler(goalText) {
     setGoals((currentGoals) => [
       ...currentGoals,
@@ -15,6 +15,7 @@ export default function App() {
     ]);
   }
 
+  // Delete a goal by id
   function deleteGoalHandler(goalId) {
     setGoals((currentGoals) => {
       return currentGoals.filter((goal) => goal.id !== goalId);
@@ -23,8 +24,23 @@ export default function App() {
 
   return (
     <View style={styles.appContainer}>
+      {/* Input Section */}
       <GoalInput onAddGoal={addGoalHandler} />
-      <GoalList goals={goals} onDelete={deleteGoalHandler} />
+
+      {/* Goals List */}
+      <View style={styles.goalsContainer}>
+        <FlatList
+          data={goals}
+          renderItem={(itemData) => (
+            <GoalItem
+              text={itemData.item.text}
+              id={itemData.item.id}
+              onDelete={deleteGoalHandler}
+            />
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
     </View>
   );
 }
@@ -35,5 +51,9 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingHorizontal: 16,
     backgroundColor: '#f8f8f8'
+  },
+  goalsContainer: {
+    flex: 1,
+    marginTop: 20
   }
 });
