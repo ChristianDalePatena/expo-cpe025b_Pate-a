@@ -24,7 +24,7 @@ export default GoalList;
 
 const styles = StyleSheet.create({
   goalsContainer: {
-    height: 300,      // Limit height to show scroll effect
+    height: 300,      
     marginTop: 20
   }
 });
